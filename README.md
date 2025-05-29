@@ -1,84 +1,46 @@
-# Static Site Generator
+# Maze Generator and Solver
 
-A simple static site generator built with Node.js that converts Markdown content into HTML pages.
+A Python application that generates and solves random mazes using depth-first search algorithms. The project uses Tkinter to visualize the maze generation and solving process.
 
 ## Features
 
-- Markdown content support
-- HTML templates
-- Static asset handling
-- Clean and responsive default design
+- Generates random mazes using a depth-first search algorithm
+- Solves mazes using a depth-first search algorithm
+- Visualizes the maze generation and solving process
+- Supports different maze sizes
+- Includes animation for both generation and solving
+- Uses optional seeding for reproducible mazes
 
-## Getting Started
+## Requirements
 
-### Installation
+- Python 3.x
+- Tkinter (usually comes with Python)
+
+## How to Run
 
 1. Clone this repository
-2. Install dependencies:
-
-```bash
-npm install
-```
-
-### Usage
-
-1. Add your Markdown content to the `content` directory
-2. Customize templates in the `templates` directory (optional)
-3. Add static files (CSS, images, etc.) to the `static` directory (optional)
-4. Build the site:
-
-```bash
-npm run build
-```
-
-5. The generated site will be in the `public` directory
-6. To preview the site locally:
-
-```bash
-npm run serve
-```
-
-### Content Structure
-
-- Create Markdown files (`.md`) in the `content` directory
-- Each file must include front matter at the top:
-
-```markdown
----
-title: Page Title
----
-
-# Your content here
-```
-
-### File Naming
-
-- Files named `index.md` become `index.html` in their respective directories
-- Other files (e.g., `about.md`) become directories with an `index.html` file inside (e.g., `/about/index.html`)
+2. Run the main script:
+   ```
+   python3 maze_window.py
+   ```
 
 ## Project Structure
 
-```
-.
-├── content/        # Markdown content files
-├── templates/      # HTML templates
-├── static/         # Static assets (CSS, images, etc.)
-├── public/         # Output directory (generated site)
-├── main.js         # Main generator script
-└── package.json    # Project configuration
-```
+- `maze_window.py`: Main file containing the Window, Cell, and Maze classes
+- `tests.py`: Unit tests for the maze generator and solver
 
-## Customization
+## How It Works
 
-### Templates
+1. The program creates a grid of cells, each with four walls.
+2. The maze generation algorithm uses a depth-first search to break down walls between cells, creating a valid maze with exactly one path from the entrance to the exit.
+3. The maze solving algorithm uses another depth-first search to find a path from the entrance (top-left) to the exit (bottom-right).
+4. The process is animated, showing the exploration and solution paths.
 
-Edit the template files in the `templates` directory to customize the HTML structure.
+## Future Improvements
 
-Templates use a simple variable replacement system:
+Potential extensions to this project:
 
-- `{{title}}` - Page title from front matter
-- `{{content}}` - Rendered HTML content from the Markdown
-
-### Styling
-
-Edit the CSS files in the `static/css` directory to customize the appearance of your site.
+- Additional solving algorithms (BFS, A\*)
+- User interface for configuring maze size and animation speed
+- 3D maze generation and solving
+- Interactive mode where users can navigate the maze
