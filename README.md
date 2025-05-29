@@ -1,59 +1,84 @@
-# Python Asteroids Game
+# Static Site Generator
 
-A classic Asteroids arcade game built with Python and Pygame.
-
-## Description
-
-This is a clone of the classic Asteroids arcade game implemented in Python using the Pygame library. Control a spaceship and destroy asteroids while avoiding collisions.
+A simple static site generator built with Node.js that converts Markdown content into HTML pages.
 
 ## Features
 
-- Player-controlled spaceship with rotation and thrust
-- Asteroids that split into smaller ones when shot
-- Collision detection
-- Simple physics-based movement
+- Markdown content support
+- HTML templates
+- Static asset handling
+- Clean and responsive default design
 
-## Controls
+## Getting Started
 
-- W: Thrust forward
-- A: Rotate left
-- D: Rotate right
-- S: Slow down / brake
-- SPACE: Shoot
-
-## Installation
+### Installation
 
 1. Clone this repository
-2. Create a virtual environment (optional but recommended):
-   ```
-   python -m venv venv
-   source venv/bin/activate  # On Windows, use: venv\Scripts\activate
-   ```
-3. Install dependencies:
-   ```
-   pip install -r requirements.txt
-   ```
-4. Run the game:
-   ```
-   python main.py
-   ```
+2. Install dependencies:
 
-## Requirements
+```bash
+npm install
+```
 
-- Python 3.x
-- Pygame 2.6.1
+### Usage
 
-## Game Mechanics
+1. Add your Markdown content to the `content` directory
+2. Customize templates in the `templates` directory (optional)
+3. Add static files (CSS, images, etc.) to the `static` directory (optional)
+4. Build the site:
 
-- Large asteroids split into medium ones when hit
-- Medium asteroids split into small ones when hit
-- Small asteroids disappear when hit
-- Game ends when the player collides with an asteroid
+```bash
+npm run build
+```
 
-## Future Enhancements
+5. The generated site will be in the `public` directory
+6. To preview the site locally:
 
-- Scoring system
-- Multiple lives
-- Sound effects
-- Power-ups
-- Screen wrapping
+```bash
+npm run serve
+```
+
+### Content Structure
+
+- Create Markdown files (`.md`) in the `content` directory
+- Each file must include front matter at the top:
+
+```markdown
+---
+title: Page Title
+---
+
+# Your content here
+```
+
+### File Naming
+
+- Files named `index.md` become `index.html` in their respective directories
+- Other files (e.g., `about.md`) become directories with an `index.html` file inside (e.g., `/about/index.html`)
+
+## Project Structure
+
+```
+.
+├── content/        # Markdown content files
+├── templates/      # HTML templates
+├── static/         # Static assets (CSS, images, etc.)
+├── public/         # Output directory (generated site)
+├── main.js         # Main generator script
+└── package.json    # Project configuration
+```
+
+## Customization
+
+### Templates
+
+Edit the template files in the `templates` directory to customize the HTML structure.
+
+Templates use a simple variable replacement system:
+
+- `{{title}}` - Page title from front matter
+- `{{content}}` - Rendered HTML content from the Markdown
+
+### Styling
+
+Edit the CSS files in the `static/css` directory to customize the appearance of your site.
