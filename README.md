@@ -1,25 +1,59 @@
-# learn-cicd-starter (Notely)
+# Python Asteroids Game
 
-![Tests](https://github.com/K001AIduh/learn-cicd-starter/actions/workflows/ci.yml/badge.svg)
+A classic Asteroids arcade game built with Python and Pygame.
 
-This repo contains the starter code for the "Notely" application for the "Learn CICD" course on [Boot.dev](https://boot.dev).
+## Description
 
-## Local Development
+This is a clone of the classic Asteroids arcade game implemented in Python using the Pygame library. Control a spaceship and destroy asteroids while avoiding collisions.
 
-Make sure you're on Go version 1.22+.
+## Features
 
-Create a `.env` file in the root of the project with the following contents:
+- Player-controlled spaceship with rotation and thrust
+- Asteroids that split into smaller ones when shot
+- Collision detection
+- Simple physics-based movement
 
-```bash
-PORT="8080"
-```
+## Controls
 
-Run the server:
+- W: Thrust forward
+- A: Rotate left
+- D: Rotate right
+- S: Slow down / brake
+- SPACE: Shoot
 
-```bash
-go build -o notely && ./notely
-```
+## Installation
 
-_This starts the server in non-database mode._ It will serve a simple webpage at `http://localhost:8080`.
+1. Clone this repository
+2. Create a virtual environment (optional but recommended):
+   ```
+   python -m venv venv
+   source venv/bin/activate  # On Windows, use: venv\Scripts\activate
+   ```
+3. Install dependencies:
+   ```
+   pip install -r requirements.txt
+   ```
+4. Run the game:
+   ```
+   python main.py
+   ```
 
-You do _not_ need to set up a database or any interactivity on the webpage yet. Instructions for that will come later in the course!
+## Requirements
+
+- Python 3.x
+- Pygame 2.6.1
+
+## Game Mechanics
+
+- Large asteroids split into medium ones when hit
+- Medium asteroids split into small ones when hit
+- Small asteroids disappear when hit
+- Game ends when the player collides with an asteroid
+
+## Future Enhancements
+
+- Scoring system
+- Multiple lives
+- Sound effects
+- Power-ups
+- Screen wrapping

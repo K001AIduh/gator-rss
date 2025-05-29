@@ -1,4 +1,2 @@
-out
-.env
-learn-cicd-starter
-notely
+venv/
+__pycache__/

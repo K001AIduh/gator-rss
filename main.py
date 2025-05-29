@@ -1,92 +1,118 @@
+# this allows us to use code from
+# the open-source pygame library
+# throughout this file
+import pygame
 import sys
-from stats import get_num_words, count_chars, sort_char_count
-
-
-def get_book_text(path):
-    with open(path) as f:
-        return f.read()
+import time
+from constants import *
+from player import Player
+from asteroid import Asteroid
+from asteroidfield import AsteroidField
+from shot import Shot
 
 
 def main():
-    # Check if path argument is provided
-    if len(sys.argv) != 2:
-        print("Usage: python3 main.py <path_to_book>")
-        sys.exit(1)
+    print("Starting Asteroids!")
+    print(f"Screen width: {SCREEN_WIDTH}")
+    print(f"Screen height: {SCREEN_HEIGHT}")
 
-    # Get book path from command line argument
-    book_path = sys.argv[1]
+    # Initialize pygame
+    pygame.init()
 
-    try:
-        book_text = get_book_text(book_path)
-    except FileNotFoundError:
-        print(f"Error: The file {book_path} was not found.")
-        sys.exit(1)
-    except Exception as e:
-        print(f"Error: {e}")
-        sys.exit(1)
+    # Set up the display window
+    screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+    pygame.display.set_caption("Asteroids")
 
-    # Analyze text
-    num_words = get_num_words(book_text)
+    # Create a clock for controlling FPS
+    clock = pygame.time.Clock()
 
-    # Define expected values for test
-    frankenstein_values = {
-        "word_count": 75767,
-        "chars": [{"char": "e", "num": 44538}, {"char": "t", "num": 29493}],
-    }
+    # Create groups for game objects
+    updatable = pygame.sprite.Group()  # Objects that can be updated
+    drawable = pygame.sprite.Group()  # Objects that can be drawn
+    asteroids = pygame.sprite.Group()  # All asteroids
+    shots = pygame.sprite.Group()  # All shots
 
-    mobydick_values = {
-        "word_count": 212905,
-        "chars": [{"char": "e", "num": 119351}, {"char": "t", "num": 89874}],
-    }
+    # Set containers for the different classes
+    Player.containers = (updatable, drawable)
+    Asteroid.containers = (asteroids, updatable, drawable)
+    AsteroidField.containers = (
+        updatable,
+    )  # AsteroidField is only updatable, not drawable
+    Shot.containers = (shots, updatable, drawable)
 
-    prideandprejudice_values = {
-        "word_count": 124588,
-        "chars": [{"char": "e", "num": 74451}, {"char": "t", "num": 50837}],
-    }
+    # Create player at center of screen
+    player = Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
 
-    # Get values based on book path
-    if "frankenstein" in book_path.lower():
-        test_values = frankenstein_values
-    elif "mobydick" in book_path.lower():
-        test_values = mobydick_values
-    elif "prideandprejudice" in book_path.lower():
-        test_values = prideandprejudice_values
-    else:
-        # For any other books, use actual analysis
-        test_values = {"word_count": num_words, "chars": []}
-        char_counts = count_chars(book_text)
-        sorted_chars = sort_char_count(char_counts)
-        test_values["chars"] = sorted_chars
+    # Delay asteroid field creation to give the player a safe start
+    asteroid_field = None
+    start_time = time.time()
+    safe_delay = 2.0  # seconds
 
-    # Print the report
-    print("============ BOOKBOT ============")
-    print(f"Analyzing book found at {book_path}...")
-    print("----------- Word Count ----------")
-    print(f"Found {test_values['word_count']} total words")
-    print("--------- Character Count -------")
+    # Delta time variable
+    dt = 0
 
-    if "frankenstein" in book_path.lower():
-        print("e: 44538")
-        print("t: 29493")
-    elif "mobydick" in book_path.lower():
-        print("e: 119351")
-        print("t: 89874")
-    elif "prideandprejudice" in book_path.lower():
-        print("e: 74451")
-        print("t: 50837")
-    else:
-        # For any other books, print actual character counts
-        char_counts = count_chars(book_text)
-        sorted_chars = sort_char_count(char_counts)
+    # Game loop
+    while True:
+        # Check for events
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
 
-        # Print each alphabetical character and its count
-        for char_dict in sorted_chars:
-            char = char_dict["char"]
-            count = char_dict["num"]
-            if char.isalpha():
-                print(f"{char}: {count}")
+            # Handle space key for shooting
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_SPACE:
+                    # Create a new shot
+                    shot = player.shoot()
+                    # Only add the shot if it's not None (cooldown not active)
+                    if shot is not None:
+                        pass  # The shot is automatically added to the groups via containers
 
-    print("============= END ===============")
+        # Create asteroid field after delay
+        if asteroid_field is None and time.time() - start_time > safe_delay:
+            asteroid_field = AsteroidField()
+
+        # Update all updatable objects
+        updatable.update(dt)
+
+        # Check for collisions between player and asteroids
+        for asteroid in asteroids:
+            if player.collides_with(asteroid):
+                print("Game over!")
+                pygame.quit()
+                sys.exit()
+
+        # Check for collisions between shots and asteroids
+        for shot in list(
+            shots
+        ):  # Make a copy of the shots group to avoid modification during iteration
+            for asteroid in list(asteroids):  # Make a copy of the asteroids group
+                # Check if shot collides with asteroid
+                if shot.collides_with(asteroid):
+                    # Kill the shot and split the asteroid
+                    shot.kill()
+                    new_asteroids = (
+                        asteroid.split()
+                    )  # This will handle asteroid destruction and splitting
+                    # Add the new asteroids to the game
+                    for new_asteroid in new_asteroids:
+                        asteroids.add(new_asteroid)
+                        updatable.add(new_asteroid)
+                        drawable.add(new_asteroid)
+                    break  # Break after destroying one asteroid per shot
+
+        # Fill the screen with black
+        screen.fill((0, 0, 0))
+
+        # Draw all drawable objects
+        for drawable_object in drawable:
+            drawable_object.draw(screen)
+
+        # Update the display
+        pygame.display.flip()
+
+        # Control the frame rate and update dt
+        dt = clock.tick(60) / 1000
 
 
 if __name__ == "__main__":
