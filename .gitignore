@@ -1,14 +1,22 @@
-# Python bytecode
-__pycache__/
-*.py[cod]
+# Executable
+pokedexcli
+Boot.Dev
 
-# Environment variables
-.env
+# Log files
+repl.log
 
-# IDE files
-.vscode/
+# Go specific
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+/vendor/
+
+# IDE specific files
 .idea/
-
-# System files
-.DS_Store
-Thumbs.db
+.vscode/
+*.swp
+*.swo

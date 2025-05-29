@@ -1,46 +1,45 @@
-# Maze Generator and Solver
+# Pokedex CLI
 
-A Python application that generates and solves random mazes using depth-first search algorithms. The project uses Tkinter to visualize the maze generation and solving process.
+A command-line REPL Pokedex application that uses the PokéAPI to fetch and display Pokemon data.
 
 ## Features
 
-- Generates random mazes using a depth-first search algorithm
-- Solves mazes using a depth-first search algorithm
-- Visualizes the maze generation and solving process
-- Supports different maze sizes
-- Includes animation for both generation and solving
-- Uses optional seeding for reproducible mazes
+- Browse location areas where Pokemon can be found
+- Explore specific locations to see available Pokemon
+- Catch Pokemon with a simulated probability
+- Inspect details of caught Pokemon
+- View your Pokedex with all caught Pokemon
+- Caching system to improve performance and reduce API calls
 
-## Requirements
+## Commands
 
-- Python 3.x
-- Tkinter (usually comes with Python)
+- `help` - Display help message with available commands
+- `exit` - Exit the application
+- `map` - Display the next 20 location areas
+- `mapb` - Display the previous 20 location areas
+- `explore [location]` - Explore a location area for Pokemon
+- `catch [pokemon]` - Attempt to catch a Pokemon
+- `inspect [pokemon]` - View details about a caught Pokemon
+- `pokedex` - List all caught Pokemon
 
 ## How to Run
 
-1. Clone this repository
-2. Run the main script:
-   ```
-   python3 maze_window.py
-   ```
+Make sure you have Go installed, then run:
 
-## Project Structure
+```
+go run main.go
+```
 
-- `maze_window.py`: Main file containing the Window, Cell, and Maze classes
-- `tests.py`: Unit tests for the maze generator and solver
+## Dependencies
 
-## How It Works
+- Standard Go libraries only
+  - `bufio` - For reading user input
+  - `encoding/json` - For parsing JSON responses
+  - `net/http` - For making HTTP requests to the PokéAPI
+  - `time` - For caching
 
-1. The program creates a grid of cells, each with four walls.
-2. The maze generation algorithm uses a depth-first search to break down walls between cells, creating a valid maze with exactly one path from the entrance to the exit.
-3. The maze solving algorithm uses another depth-first search to find a path from the entrance (top-left) to the exit (bottom-right).
-4. The process is animated, showing the exploration and solution paths.
+No external dependencies required.
 
-## Future Improvements
+## Data Source
 
-Potential extensions to this project:
-
-- Additional solving algorithms (BFS, A\*)
-- User interface for configuring maze size and animation speed
-- 3D maze generation and solving
-- Interactive mode where users can navigate the maze
+This application uses the [PokéAPI](https://pokeapi.co/), a free RESTful Pokemon API.
