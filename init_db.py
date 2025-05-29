@@ -1,11 +1,6 @@
-from app import create_app
-from models import db
+from models import init_db
 
-# Create an application instance with the app factory
-app = create_app()
-
-# Push an application context to make the app aware of the db
-with app.app_context():
+if __name__ == "__main__":
     print("Creating database tables...")
-    db.create_all()
+    init_db()
     print("Database tables created successfully!")
