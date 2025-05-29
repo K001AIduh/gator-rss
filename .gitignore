@@ -1,22 +1,35 @@
-# Executable
-pokedexcli
-Boot.Dev
+# Python bytecode
+__pycache__/
+*.py[cod]
+*$py.class
 
-# Log files
-repl.log
+# Virtual environment
+venv/
+env/
+ENV/
 
-# Go specific
-*.exe
-*.exe~
-*.dll
-*.so
-*.dylib
-*.test
-*.out
-/vendor/
+# Distribution / packaging
+dist/
+build/
+*.egg-info/
 
-# IDE specific files
+# Database
+*.db
+*.sqlite3
+
+# Environment variables
+.env
+
+# IDE files
 .idea/
 .vscode/
 *.swp
 *.swo
+
+# Logs
+logs/
+*.log
+
+# OS specific files
+.DS_Store
+Thumbs.db

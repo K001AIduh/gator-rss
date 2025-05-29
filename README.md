@@ -1,181 +1,76 @@
-# Gator RSS Feed Aggregator
+# Task Management API
 
-Gator is a command-line RSS feed aggregator written in Go that helps you keep track of your favorite websites' updates in one place.
+A RESTful API for managing tasks and to-do lists with user authentication.
 
 ## Features
 
-- User management system
-- Add and manage RSS feeds
-- Follow/unfollow feeds
-- Automatically fetch and store posts from feeds
-- Browse posts from feeds you follow
-- Simple command-line interface
+- User registration and authentication
+- Create, read, update, and delete tasks
+- Mark tasks as complete/incomplete
+- Filter tasks by status and due date
+- Secure password handling with hashing
 
-## Requirements
+## Technologies Used
 
-- Go 1.16 or later
-- PostgreSQL 13 or later
+- Python 3.8+
+- Flask (Web framework)
+- SQLite (Database)
+- JWT for authentication
+- RESTful API design principles
 
 ## Installation
 
-### Installing from Source
+1. Clone the repository:
 
-1. Clone this repository or download the source code
-2. Install the CLI with:
-
-```bash
-go install
+```
+git clone https://github.com/yourusername/task-management-api.git
+cd task-management-api
 ```
 
-Alternatively, you can build it locally:
+2. Create and activate a virtual environment:
 
-```bash
-go build -o gator
+```
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
 ```
 
-### Database Setup
+3. Install the dependencies:
 
-Gator requires PostgreSQL for storing feeds, posts, and user data.
-
-1. Create a new PostgreSQL database:
-
-```bash
-createdb gator
+```
+pip install -r requirements.txt
 ```
 
-2. The application will automatically run migrations when started.
+4. Initialize the database:
 
-## Configuration
-
-Gator uses a configuration file stored at `~/.gatorconfig.json`. The file will be created automatically when you first use the application, but you can also create it manually:
-
-```json
-{
-  "database_url": "postgres://postgres:postgres@localhost:5432/gator?sslmode=disable",
-  "current_user": ""
-}
 ```
-
-Replace the database URL with your actual PostgreSQL connection string.
+python init_db.py
+```
 
 ## Usage
 
-### User Management
-
-Register a new user:
+1. Start the server:
 
 ```
-gator register <username>
+python app.py
 ```
 
-Log in as a user:
+2. The API will be available at `http://localhost:5000`
 
-```
-gator login <username>
-```
+## API Endpoints
 
-List all users:
+- `POST /api/register` - Register a new user
+- `POST /api/login` - Login and get authentication token
+- `GET /api/tasks` - Get all tasks for the logged-in user
+- `POST /api/tasks` - Create a new task
+- `GET /api/tasks/<task_id>` - Get a specific task
+- `PUT /api/tasks/<task_id>` - Update a task
+- `DELETE /api/tasks/<task_id>` - Delete a task
 
-```
-gator users
-```
+## Project Structure
 
-### Managing Feeds
-
-Add a new feed:
-
-```
-gator addfeed "<feed_name>" "<feed_url>"
-```
-
-Example:
-
-```
-gator addfeed "TechCrunch" "https://techcrunch.com/feed/"
-```
-
-List all feeds in the database:
-
-```
-gator feeds
-```
-
-### Following Feeds
-
-Follow a feed by URL:
-
-```
-gator follow "<feed_url>"
-```
-
-Unfollow a feed:
-
-```
-gator unfollow "<feed_url>"
-```
-
-List feeds you're following:
-
-```
-gator following
-```
-
-### Working with Posts
-
-Start the feed aggregator to fetch posts (with a specified interval between requests):
-
-```
-gator agg <interval>
-```
-
-Example (fetch every 10 minutes):
-
-```
-gator agg 10m
-```
-
-Browse posts from feeds you follow:
-
-```
-gator browse [limit]
-```
-
-Example (show 10 posts):
-
-```
-gator browse 10
-```
-
-## Example Workflow
-
-```bash
-# Register a new user
-gator register johndoe
-
-# Add some feeds
-gator addfeed "TechCrunch" "https://techcrunch.com/feed/"
-gator addfeed "Hacker News" "https://news.ycombinator.com/rss"
-gator addfeed "Boot.dev Blog" "https://blog.boot.dev/index.xml"
-
-# List the feeds you're following
-gator following
-
-# Start the aggregator to fetch posts (runs continuously)
-gator agg 30m
-
-# In another terminal, browse your posts
-gator browse 20
-```
-
-## Interval Format
-
-The `agg` command accepts interval strings in Go's duration format:
-
-- `10s` - 10 seconds
-- `5m` - 5 minutes
-- `1h` - 1 hour
-- `1h30m` - 1 hour and 30 minutes
-
-## Contributing
-
-Contributions are welcome! Feel free to submit a pull request.
+- `app.py`: Main application file
+- `models.py`: Database models
+- `routes.py`: API endpoints
+- `init_db.py`: Database initialization script
+- `config.py`: Configuration settings
+- `requirements.txt`: Project dependencies
