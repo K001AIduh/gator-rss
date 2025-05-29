@@ -1,9 +1,0 @@
-{
-  "name": "static-site-generator",
-  "version": "1.0.0",
-  "description": "A custom static site generator built in Python",
-  "scripts": {
-    "generate": "python3 src/main.py",
-    "serve": "cd public && python3 -m http.server 8888"
-  }
-}
